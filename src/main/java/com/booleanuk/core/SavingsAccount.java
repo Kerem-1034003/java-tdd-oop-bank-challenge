@@ -3,14 +3,9 @@ package com.booleanuk.core;
 import java.util.ArrayList;
 import java.util.List;
 
-public class SavingsAccount {
-    private List<Transaction> transactions;
-
-    public SavingsAccount() {
-        this.transactions = new ArrayList<>();
+public class SavingsAccount extends Account{
+    public SavingsAccount(){
+        super();
     }
 
-    public List<Transaction> getTransactions() {
-        return transactions;
-    }
 }
