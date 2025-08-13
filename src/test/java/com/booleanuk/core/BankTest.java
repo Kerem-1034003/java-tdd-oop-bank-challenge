@@ -2,6 +2,8 @@ package com.booleanuk.core;
 
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
+
+import java.time.LocalDate;
 import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import org.junit.jupiter.api.BeforeEach;
@@ -40,9 +42,9 @@ public class BankTest {
 
     @Test
     public void savingsAccount_statement_ShouldDisplayAllTransactionsWithBalance(){
-        savingsAccount.deposit(1000, "13/08/2025");
-        savingsAccount.deposit(2000, "23/09/2025");
-        savingsAccount.withdraw(1500, "25/09/2025");
+        savingsAccount.deposit(1000, LocalDate.of(2025, 8, 13));
+        savingsAccount.deposit(2000, LocalDate.of(2025, 9, 23));
+        savingsAccount.withdraw(1500, LocalDate.of(2025, 9, 25));
 
         List<String> statement = savingsAccount.getStatement();
 
@@ -54,10 +56,10 @@ public class BankTest {
 
     @Test
     public void currentAccount_statement_ShouldDisplayAllTransactionsWithBalance(){
-        currentAccount.deposit(10000, "12/08/2025");
-        currentAccount.withdraw(1000, "13/08/2025");
-        currentAccount.withdraw(2000, "23/09/2025");
-        currentAccount.deposit(1500, "25/09/2025");
+        currentAccount.deposit(10000, LocalDate.of(2025, 8, 12));
+        currentAccount.withdraw(1000, LocalDate.of(2025, 8, 13));
+        currentAccount.withdraw(2000, LocalDate.of(2025, 9, 23));
+        currentAccount.deposit(1500, LocalDate.of(2025, 9, 25));
 
         List<String> statement2 = currentAccount.getStatement();
 
@@ -65,6 +67,5 @@ public class BankTest {
         assertEquals("23/09/2025 || 2000.00 || 7000.00", statement2.get(1));
         assertEquals("13/08/2025 || 1000.00 || 9000.00", statement2.get(2));
         assertEquals("12/08/2025 || 10000.00 || 10000.00", statement2.get(3));
-
     }
 }

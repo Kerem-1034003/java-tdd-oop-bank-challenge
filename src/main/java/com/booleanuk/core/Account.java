@@ -2,11 +2,15 @@ package com.booleanuk.core;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Locale;
+import java.util.Collections;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 
 public abstract class Account {
     protected List<Transaction> transactions;
     protected double balance;
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
 
     public Account(){
         this.transactions = new ArrayList<>();
@@ -17,37 +21,33 @@ public abstract class Account {
         return transactions;
     }
 
-    public void deposit(double amount, String date){
-        balance+= amount;
-        transactions.add(new Transaction(date, amount, "deposit"));
+    public void deposit(double amount, LocalDate date) {
+        balance += amount;
+        transactions.add(new Transaction(date, amount, balance));
     }
 
-    public void withdraw(double amount, String date){
+    public void withdraw(double amount, LocalDate date) {
         balance -= amount;
-        transactions.add(new Transaction(date, amount, "withdraw"));
+        transactions.add(new Transaction(date, -amount, balance));
+    }
+
+    public void deposit(double amount) {
+        deposit(amount, LocalDate.now());
+    }
+
+    public void withdraw(double amount) {
+        withdraw(amount, LocalDate.now());
     }
 
     public List<String> getStatement() {
-        List<String> statement = new ArrayList<>();
-        double runningBalance = balance;
+        List<Transaction> reversed = new ArrayList<>(transactions);
+        Collections.reverse(reversed);
 
-        for (int i = transactions.size() - 1; i >= 0; i--) {
-            Transaction t = transactions.get(i);
-            String line;
-
-            if (t.getType().equals("deposit")) {
-                line = String.format(Locale.US, "%s || %.2f || %.2f", t.getDate(), t.getAmount(), runningBalance);
-                runningBalance -= t.getAmount();
-            } else if (t.getType().equals("withdraw")) {
-                line = String.format(Locale.US, "%s || %.2f || %.2f", t.getDate(), t.getAmount(), runningBalance);
-                runningBalance += t.getAmount();
-            } else {
-                continue;
-            }
-            statement.add(line);
+        List<String> statementLines = new ArrayList<>();
+        for (Transaction t : reversed) {
+            statementLines.add(t.toString());
         }
-
-        return statement;
-        }
+        return statementLines;
+    }
 
 }

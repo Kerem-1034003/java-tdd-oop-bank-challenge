@@ -1,17 +1,23 @@
 package com.booleanuk.core;
 
-public class Transaction {
-    private final String date;
-    private final double amount;
-    private final String type;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Locale;
 
-    public Transaction(String date, double amount, String type){
+public class Transaction {
+    private LocalDate date;
+    private double amount;
+    private double balanceAfter;
+
+    private static final DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+
+    public Transaction(LocalDate date, double amount, double balanceAfter) {
         this.date = date;
         this.amount = amount;
-        this.type = type;
+        this.balanceAfter = balanceAfter;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
@@ -19,7 +25,20 @@ public class Transaction {
         return amount;
     }
 
-    public String getType() {
-        return type;
+    public double getBalanceAfter() {
+        return balanceAfter;
+    }
+
+    @Override
+    public String toString() {
+        if (amount > 0) {
+            return date.format(formatter) + " || " +
+                    String.format(Locale.US, "%.2f", amount) + " || " +
+                    String.format(Locale.US, "%.2f", balanceAfter);
+        } else {
+            return date.format(formatter) + " || " +
+                    String.format(Locale.US, "%.2f", Math.abs(amount)) + " || " +
+                    String.format(Locale.US, "%.2f", balanceAfter);
+        }
     }
 }
