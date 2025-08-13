@@ -6,24 +6,34 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 
 public class BankTest {
-    static CurrentAccount account;
+    static CurrentAccount currentAccount;
+    static SavingsAccount savingsAccount;
+
     @BeforeAll
     static void beforeAll() {
-         account = new CurrentAccount();
-
+        currentAccount = new CurrentAccount();
+        savingsAccount = new SavingsAccount();
     }
 
     @Test
     public void createCurrentAccount(){
-//        CurrentAccount account = new CurrentAccount();
-        assertNotNull(account, "Account created");
+        assertNotNull(currentAccount, "Current account created");
     }
 
     @Test
-    public void newAccount_ShouldHaveNoTransactions(){
-      //  CurrentAccount account = new CurrentAccount();
-        List<Transaction> transactions = account.getTransactions();
-        assertTrue(transactions.isEmpty(), "new account with no Transactions");
+    public void newCurrentAccount_ShouldHaveNoTransactions(){
+        List<Transaction> transactions = currentAccount.getTransactions();
+        assertTrue(transactions.isEmpty(), "new current account with no Transactions");
+    }
 
+    @Test
+    public void createSavingsAccount(){
+        assertNotNull(savingsAccount, "Savings account created");
+    }
+
+    @Test
+    public void newSavingsAccount_ShouldHaveNoTransactions(){
+        List<Transaction> transactions = savingsAccount.getTransactions();
+        assertTrue(transactions.isEmpty(), "new savings account with no Transactions");
     }
 }
